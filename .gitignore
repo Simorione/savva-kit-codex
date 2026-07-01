@@ -1,0 +1,12 @@
+# секреты и локальное — никогда не коммитим
+*.secret
+*.secret.*
+.secrets/
+.env
+.env.*
+access-*.txt
+*-access.txt
+# артефакты
+graphify-out/
+*.log
+.DS_Store
