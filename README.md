@@ -11,6 +11,10 @@ LLM-поддерживаемой вики (по Карпатому) + 4-слой
 Работает поверх любого ИИ-ассистента, который умеет читать инструкции из файлов:
 **ChatGPT / Codex, Claude Code, Cursor** и т.п. Ниже — как завести за 5 минут.
 
+> Эта версия — tool-agnostic + готовые Custom GPT-промпты (`prompts-chatgpt/`). Для **Claude Code**
+> есть родной вариант (субагенты с YAML-шапками в `.claude/agents/`, скилл, `CLAUDE.md`):
+> **https://github.com/Simorione/savva-kit-claude**.
+
 ---
 
 ## Что внутри
