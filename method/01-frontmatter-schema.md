@@ -19,6 +19,7 @@ consumers: [<кто читает: имена страниц/ролей>]
 tags: [<свободные тэги>]
 confidence: <low | medium | high>
 review_cycle: <weekly | monthly | quarterly | never>
+last_verified_against: "<против чего сверялась истинность: версия кода/снимок реальности/дата>"
 ---
 ```
 
@@ -37,6 +38,7 @@ review_cycle: <weekly | monthly | quarterly | never>
 | `tags` | array | нет | Свободные тэги для поиска |
 | `confidence` | enum | да | low / medium / high |
 | `review_cycle` | enum | да | Когда пересматривать на актуальность |
+| `last_verified_against` | string | нет | Против какой **реальности** сверялась истинность страницы: версия кода (хэш коммита), снимок прода, дата проверки. Отличается от `updated`: `updated` = когда правили **текст**, `last_verified_against` = против какой реальности проверяли, что текст всё ещё правда. Часть программы надёжности (`07-reliability-program.md`) |
 
 ## Домены (адаптируй под свой проект)
 
