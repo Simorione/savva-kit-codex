@@ -10,3 +10,6 @@ access-*.txt
 graphify-out/
 *.log
 .DS_Store
+
+__pycache__/
+*.pyc
