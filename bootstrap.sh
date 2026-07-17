@@ -27,9 +27,10 @@ mkdir -p "$TARGET/.savva-kit"
 cp -R "$KIT_DIR/method"           "$TARGET/.savva-kit/"
 cp -R "$KIT_DIR/agents"           "$TARGET/.savva-kit/"
 cp -R "$KIT_DIR/skills"           "$TARGET/.savva-kit/"
+cp -R "$KIT_DIR/tools"            "$TARGET/.savva-kit/"
 cp    "$KIT_DIR/method/01-frontmatter-schema.md" "$TARGET/wiki/meta/frontmatter-schema.md"
 cp    "$KIT_DIR/method/02-propagation-rules.md"  "$TARGET/wiki/meta/propagation-rules.md"
-echo "==> Метод и роли скопированы в $TARGET/.savva-kit/"
+echo "==> Метод, роли и хардгейты (tools/) скопированы в $TARGET/.savva-kit/"
 
 # 3. Стартовый index.md вики (если ещё нет)
 if [[ ! -f "$TARGET/wiki/index.md" ]]; then
@@ -56,7 +57,12 @@ fi
 if [[ ! -f "$TARGET/AGENTS.md" ]]; then
   cp "$KIT_DIR/AGENTS.md" "$TARGET/AGENTS.md"
   cp "$KIT_DIR/AGENTS.md" "$TARGET/CLAUDE.md"
-  echo "==> Контракт положен: $TARGET/AGENTS.md (+ CLAUDE.md)"
+  # В целевом проекте метод/роли/тулы лежат в .savva-kit/ — переписываем ссылки контракта туда.
+  # (Слои raw/inbox/workspace/wiki остаются в корне и НЕ трогаются.)
+  for c in "$TARGET/AGENTS.md" "$TARGET/CLAUDE.md"; do
+    sed -i -E 's#`(method|agents|tools|skills)/#`.savva-kit/\1/#g' "$c"
+  done
+  echo "==> Контракт положен: $TARGET/AGENTS.md (+ CLAUDE.md), ссылки → .savva-kit/"
 else
   echo "==> AGENTS.md уже существует — пропускаю (не перезаписываю)"
 fi
@@ -92,3 +98,9 @@ echo "Готово. Дальше:"
 echo "  1. Открой $TARGET в своём ИИ-ассистенте."
 echo "  2. Скажи ему: «прочитай AGENTS.md и .savva-kit/method/, представься по роли оркестратора»."
 echo "  3. Для ChatGPT без git — см. INSTALL.md, путь 2."
+echo
+echo "Хардгейты (опционально, требуют bash + GNU coreutils; на Windows — WSL/Git Bash):"
+echo "  • pre-commit-hook в рабочей копии кода:"
+echo "      ln -sf <путь>/.savva-kit/tools/hooks/pre-commit-guard.sh .git/hooks/pre-commit"
+echo "  • ежедневный отчёт линтера — см. .savva-kit/tools/README.md (systemd-таймер или cron)."
+echo "  • перед закрытием крупной фичи: bash .savva-kit/tools/gates/freshness-check.sh"

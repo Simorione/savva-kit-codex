@@ -1,7 +1,13 @@
 # tools/ — хардгейты и линтеры программы надёжности
 
 Механические проверки, которые нельзя «уговорить». Ставятся один раз, дальше работают сами.
-Подробно о роли каждого — `method/08-reliability-program.md`.
+Подробно о роли каждого — `method/07-reliability-program.md`.
+
+> **Требования к окружению.** Скрипты рассчитаны на **bash + GNU coreutils** (`sed -i`,
+> `date -d`, `stat -c`, `find -printf`) и Python 3.10+. Это Linux и macOS с GNU-утилитами.
+> На **Windows** — через **WSL** или **Git Bash** (нативный PowerShell не подойдёт: другой
+> синтаксис и утилиты). Хуки подключаются симлинком в `.git/hooks` — на Windows используй
+> копию файла вместо симлинка.
 
 ```
 tools/
@@ -39,7 +45,7 @@ bash tools/gates/freshness-check.sh
 ## Ритуал самоочистки (ежедневный отчёт)
 
 Планировщик раз в сутки гоняет линтер и кладёт read-only отчёт в `workspace/lint-report.md`
-(см. `method/09-self-cleaning.md`). Пример на systemd:
+(см. `method/08-self-cleaning.md`). Пример на systemd:
 
 ```ini
 # ~/.config/systemd/user/layer-lint.service

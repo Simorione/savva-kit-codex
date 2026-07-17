@@ -14,7 +14,9 @@ import time
 from datetime import date, datetime
 from pathlib import Path
 
-REQUIRED_KEYS = ["title", "created", "updated", "status", "sources", "review_cycle"]
+# Обязательные поля — в соответствии с method/01-frontmatter-schema.md.
+REQUIRED_KEYS = ["title", "domain", "created", "updated", "author",
+                 "status", "sources", "confidence", "review_cycle"]
 STALE_WINDOW_DAYS = {"weekly": 14, "monthly": 45, "quarterly": 120, "never": 10**6}
 SKIP_NAMES = {"index.md", "log.md", "README.md"}
 INBOX_TTL_DAYS = 7
@@ -105,14 +107,18 @@ def check_ttl(root: Path, problems: list[str]) -> None:
         d = root / layer
         if not d.is_dir():
             continue
-        # .ttl-keep — осознанные исключения: «имя — причина», по строке на запись
+        # .ttl-keep — осознанные исключения, по строке на запись. Причину можно указать
+        # inline-комментарием (# …) или тире (— / -); в ключ идёт только имя файла/папки.
         keep: set[str] = set()
         keep_file = d / ".ttl-keep"
         if keep_file.is_file():
-            for line in keep_file.read_text(encoding="utf-8").splitlines():
-                line = line.strip()
-                if line and not line.startswith("#"):
-                    keep.add(line.split(" — ")[0].split(" - ")[0].strip())
+            for raw_line in keep_file.read_text(encoding="utf-8").splitlines():
+                line = raw_line.split("#", 1)[0].strip()   # срезаем inline-комментарий
+                if not line:
+                    continue
+                name = line.split(" — ")[0].split(" - ")[0].strip().rstrip("/")
+                if name:
+                    keep.add(name)
         for f in d.iterdir():
             if f.name.startswith("."):
                 continue
