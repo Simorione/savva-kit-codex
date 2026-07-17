@@ -73,7 +73,7 @@ savva-kit/
 ### Вариант A — твой ИИ работает с git-репозиторием (Codex, Cursor, Claude Code)
 
 ```bash
-git clone <этот-репозиторий> && cd savva-kit
+git clone <этот-репозиторий> && cd savva-kit-codex
 ./bootstrap.sh /путь/к/твоему/проекту   # разложит 4-слойку, .savva-kit/ (метод+роли+tools), контракт
 ```
 
